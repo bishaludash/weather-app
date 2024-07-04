@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const WeatherCard = ({ weatherData }) => {
+  const [isCelcius, setIsCelcius] = useState(true);
   return (
     <div className="my-5 bg-slate-100 p-5 rounded-md">
       <div className="font-bold border-b-2 text-left pb-2 relative">
@@ -32,9 +33,27 @@ const WeatherCard = ({ weatherData }) => {
             </div>
             <div className="flex flex-row-1  text-slate-700 ml-5">
               <span className="text-5xl font-bold">
-                {weatherData.current.temp_c}
+                {isCelcius
+                  ? weatherData.current.temp_c
+                  : weatherData.current.temp_f}
               </span>
-              °C
+              <span
+                className={`${
+                  isCelcius ? " font-bold" : " text-slate-700"
+                } mr-1 cursor-pointer`}
+                onClick={() => setIsCelcius(true)}
+              >
+                °C
+              </span>
+              |{" "}
+              <span
+                className={`${
+                  !isCelcius ? " font-bold" : " text-slate-500"
+                } ml-1 cursor-pointer`}
+                onClick={() => setIsCelcius(false)}
+              >
+                °F
+              </span>
             </div>
           </div>
           {/* <div className="">FeelsLike {weatherData.current.feelslike_c} °C</div> */}
