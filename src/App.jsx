@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchWeather } from "./api/fetchWeather";
 import SearchBar from "./component/SearchBar";
 import ErrorMessageSnack from "./component/ErrorMessageSnack";
 import WeatherCard from "./component/WeatherCard";
 import Spinner from "./component/Spinner";
+import Cities from "./component/Cities";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -11,13 +12,34 @@ const App = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const cachedCities = JSON.parse(localStorage.getItem("cities"));
+    if (cachedCities) {
+      setCities(cachedCities);
+    }
+  }, []);
+
+  const getCityWeather = async (city) => {
+    const data = await fetchWeather(city);
+    setWeatherData(data);
+  };
+
   const fetchData = async (e) => {
     if (e.key === "Enter") {
       setIsLoading(true);
 
       try {
-        const data = await fetchWeather(cityName);
-        setWeatherData(data);
+        // fetch data from api
+        getCityWeather(cityName);
+
+        // update cities state
+        const temp_cities = [...cities, cityName];
+        setCities(temp_cities);
+        localStorage.setItem("cities", JSON.stringify(temp_cities));
+
+        //cleanup
         setCityName("");
         setError(null);
       } catch (error) {
@@ -48,6 +70,10 @@ const App = () => {
         {error && <ErrorMessageSnack error={error} />}
 
         {weatherData && <WeatherCard weatherData={weatherData} />}
+
+        {cities.length > 0 && (
+          <Cities cities={cities} getCityWeather={getCityWeather} />
+        )}
       </div>
     </div>
   );
