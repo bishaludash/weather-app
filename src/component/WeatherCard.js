@@ -22,8 +22,8 @@ const WeatherCard = ({ weatherData }) => {
           <div className=" flex">
             <div
               className="flex flex-row flex-1"
-              maxWidth={"64px"}
-              maxHeight={"64px"}
+              width={"64px"}
+              height={"64px"}
             >
               <img
                 src={weatherData.current.condition.icon}
