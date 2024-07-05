@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useTempUnit } from "../context/TemperatureContext";
 
 const WeatherCard = ({ weatherData }) => {
-  const [isCelcius, setIsCelcius] = useState(true);
+  const { isCelcius, toggleTempUnit } = useTempUnit();
+
   return (
     <div className="my-5 bg-slate-100 p-5 rounded-md">
       <div className="font-bold border-b-2 text-left pb-2 relative">
@@ -41,7 +42,7 @@ const WeatherCard = ({ weatherData }) => {
                 className={`${
                   isCelcius ? " font-bold" : " text-slate-700"
                 } mr-1 cursor-pointer`}
-                onClick={() => setIsCelcius(true)}
+                onClick={() => toggleTempUnit(true)}
               >
                 °C
               </span>
@@ -50,13 +51,12 @@ const WeatherCard = ({ weatherData }) => {
                 className={`${
                   !isCelcius ? " font-bold" : " text-slate-500"
                 } ml-1 cursor-pointer`}
-                onClick={() => setIsCelcius(false)}
+                onClick={() => toggleTempUnit(false)}
               >
                 °F
               </span>
             </div>
           </div>
-          {/* <div className="">FeelsLike {weatherData.current.feelslike_c} °C</div> */}
         </div>
 
         {/* Details */}
