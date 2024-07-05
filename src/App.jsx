@@ -22,36 +22,34 @@ const App = () => {
   }, []);
 
   const getCityWeather = async (city) => {
-    const data = await fetchWeather(city);
-    setWeatherData(data);
-    setError(null);
+    try {
+      setIsLoading(true);
+      const data = await fetchWeather(city);
+      setWeatherData(data);
+      setError(null);
+
+      // update cities state and localstorage
+      const temp_cities = [...cities, cityName];
+      setCities(temp_cities);
+      localStorage.setItem("cities", JSON.stringify(temp_cities));
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchData = async (e) => {
     if (e.key === "Enter") {
-      setIsLoading(true);
-      try {
-        if (!cityName) {
-          setError("Enter city name");
-          return false;
-        }
-        // fetch data from api
-        await getCityWeather(cityName);
-
-        // update cities state
-        const temp_cities = [...cities, cityName];
-        setCities(temp_cities);
-        localStorage.setItem("cities", JSON.stringify(temp_cities));
-
-        //cleanup
-        setCityName("");
-        setError(null);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
+      if (!cityName) {
+        setError("Enter city name");
+        return false;
       }
+      // fetch data from api
+      await getCityWeather(cityName);
+
+      //cleanup
+      setCityName("");
     }
   };
 
