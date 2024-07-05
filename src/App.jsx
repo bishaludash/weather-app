@@ -30,14 +30,13 @@ const App = () => {
   const fetchData = async (e) => {
     if (e.key === "Enter") {
       setIsLoading(true);
-
       try {
         if (!cityName) {
           setError("Enter city name");
           return false;
         }
         // fetch data from api
-        getCityWeather(cityName);
+        await getCityWeather(cityName);
 
         // update cities state
         const temp_cities = [...cities, cityName];
@@ -47,6 +46,7 @@ const App = () => {
         //cleanup
         setCityName("");
         setError(null);
+        setIsLoading(false);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -69,7 +69,6 @@ const App = () => {
           setCityName={setCityName}
           fetchData={fetchData}
         />
-
         {isLoading && <Spinner />}
 
         <ErrorMessageSnack error={error} />
