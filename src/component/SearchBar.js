@@ -8,7 +8,7 @@ const SearchBar = ({ cityName, setCityName, fetchData }) => {
         className="
         bg-gray-50 border border-gray-300 text-gray-900 
         text-sm rounded-lg focus:ring-blue-500 
-        focus:border-blue-500 w-2/4  p-2.5 
+        focus:border-blue-500 w-3/4  p-2.5 
         "
         placeholder="Enter city name"
         required

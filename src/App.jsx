@@ -24,6 +24,7 @@ const App = () => {
   const getCityWeather = async (city) => {
     const data = await fetchWeather(city);
     setWeatherData(data);
+    setError(null);
   };
 
   const fetchData = async (e) => {
@@ -31,6 +32,10 @@ const App = () => {
       setIsLoading(true);
 
       try {
+        if (!cityName) {
+          setError("Enter city name");
+          return false;
+        }
         // fetch data from api
         getCityWeather(cityName);
 
@@ -67,13 +72,11 @@ const App = () => {
 
         {isLoading && <Spinner />}
 
-        {error && <ErrorMessageSnack error={error} />}
+        <ErrorMessageSnack error={error} />
 
         {weatherData && <WeatherCard weatherData={weatherData} />}
 
-        {cities.length > 0 && (
-          <Cities cities={cities} getCityWeather={getCityWeather} />
-        )}
+        <Cities cities={cities} getCityWeather={getCityWeather} />
       </div>
     </div>
   );
